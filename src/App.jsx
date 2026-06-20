@@ -1,5 +1,7 @@
+import SenegalMap from "./components/map/SenegalMap";
+
 const App = () => {
-  return <div>App</div>;
+  return <SenegalMap />;
 };
 
 export default App;
