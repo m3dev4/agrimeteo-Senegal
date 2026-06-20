@@ -73,7 +73,7 @@ const regionCoords = {
   },
   thies: {
     id: "thies",
-    nom: "Thiès",
+    nom: "Thies",
     lat: 14.7894,
     lon: -16.926,
   },

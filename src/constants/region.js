@@ -32,4 +32,6 @@ export const ID_MAP = {
   SNZG: "ziguinchor",
 };
 
+
+
 export default REGIONS;
