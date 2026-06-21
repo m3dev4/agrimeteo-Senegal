@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import SenegalMap from "./components/map/SenegalMap";
 
 const App = () => {
   return (
@@ -7,8 +8,8 @@ const App = () => {
     <BrowserRouter>
     <Routes>
       <Route path="/" element ={<Home/>}/>
-      {/* <Route path="/carte" element={<Carte />}/>
-      <Route path="/alertes" element={<Alertes />} />
+      <Route path="/carte" element={<SenegalMap />}/>
+    {/*   <Route path="/alertes" element={<Alertes />} />
       <Route path="/previsions" element={<Previsions />} />
       <Route path="/historique" element={<Historique />} />
       <Route path="/rapports" element={<Rapports />} />

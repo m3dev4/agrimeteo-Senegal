@@ -65,6 +65,8 @@ const WeatherProvider = ({ children }) => {
           temp: data.main.temp,
           description: data.weather[0].description,
           humidity: data.main.humidity,
+          winSpeed: data.wind.speed,
+          winDeg: data.wind.deg
         };
       }),
     );

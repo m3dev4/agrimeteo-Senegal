@@ -3,6 +3,8 @@ import SenegalMapSVG from "../../../public/images/sn_fixed.svg?react";
 import { ID_MAP } from "../../constants/region";
 import { useWeatherContext } from "../../context/WeatherContext";
 import regionCoords from "../../utils/regionsCoord";
+import Layout from "../layout/Layout";
+import Wind from "../animations/wind";
 const REGION_IDS = Object.values(ID_MAP);
 
 const SenegalMap = () => {
@@ -99,11 +101,18 @@ const SenegalMap = () => {
   }, [allRegionsWeather]);
 
   return (
-    <div className="min-h-screen bg-linear-to-r from-zinc-900 via-gray-800 to-zinc-900 w-full overflow-hidden flex items-center justify-center">
-      <div className="relative" ref={containerRef}>
-        <SenegalMapSVG className="h-screen w-auto object-contain z-10 relative" />
+    <Layout>
+      <div className="min-h-screen bg-linear-to-r from-zinc-900 via-gray-800 to-zinc-900 w-full overflow-hidden flex items-center justify-center">
+        <div className="relative" ref={containerRef}>
+          <SenegalMapSVG className="h-screen w-auto object-contain z-10 relative" />
+          <Wind
+            svgRef={containerRef}
+            regionWeather={allRegionsWeather}
+            regionCoords={regionCoords}
+          />
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
