@@ -1,17 +1,27 @@
-import { useState } from "react"
-import { Bell, Search, Sun, Droplets, CloudSun } from "lucide-react"
+import { useState } from "react";
+import { Bell, Search, Sun, Droplets, CloudSun } from "lucide-react";
+import { useWeatherContext } from "../../context/WeatherContext";
 
 const Navbar = () => {
-  const [isSearchFocused, setIsSearchFocused] = useState(false)
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const { userWeather } = useWeatherContext();
+
+  const temp =
+    userWeather?.main.temp !== undefined
+      ? `${Math.round(userWeather?.main.temp)}°`
+      : " ---";
+  const humidity =
+    userWeather?.main?.humidity !== undefined
+      ? `${Math.round(userWeather?.main.humidity)}%`
+      : " ---";
 
   return (
     <div className="flex h-16 w-full items-center justify-between gap-4 px-4 md:px-6 bg-white border-b border-[#E2E8F0] select-none">
-
       <div className="flex items-center gap-3">
         <div className="block md:hidden text-[#15803D] bg-[#15803D]/10 p-2 rounded-xl">
           <CloudSun className="h-6 w-6" />
         </div>
-        
+
         {/* TEXTES DE L'APPLICATION (Masqués sur mobile, visibles sur PC) */}
         <div className="hidden md:flex flex-col min-w-[200px]">
           <div className="flex items-center gap-2">
@@ -22,9 +32,10 @@ const Navbar = () => {
               En Direct
             </span>
           </div>
-          <p className="text-[11px] text-[#64748B] font-medium">Plateforme de Résilience Agricole</p>
+          <p className="text-[11px] text-[#64748B] font-medium">
+            Plateforme de Résilience Agricole
+          </p>
         </div>
-
       </div>
 
       {/* BARRE DE RECHERCHE */}
@@ -37,8 +48,8 @@ const Navbar = () => {
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setIsSearchFocused(false)}
             className={`h-10 w-full rounded-xl bg-[#F8FAFC] border pl-10 pr-4 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:outline-none ${
-              isSearchFocused 
-                ? "border-[#15803D] bg-white ring-4 ring-[#15803D]/5 shadow-sm" 
+              isSearchFocused
+                ? "border-[#15803D] bg-white ring-4 ring-[#15803D]/5 shadow-sm"
                 : "border-[#E2E8F0] hover:border-[#CBD5E1]"
             }`}
           />
@@ -47,20 +58,21 @@ const Navbar = () => {
 
       {/* ACTIONS DE DROITE */}
       <div className="flex items-center gap-2 md:gap-3">
-        
         {/* BLOC MÉTÉO (Masqué sur mobile, visible sur grand écran uniquement) */}
         <div className="hidden items-center gap-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-1.5 lg:flex">
           <div className="flex items-center gap-1.5">
             <Sun className="h-4 w-4 text-[#D97706]" />
-            <span className="text-sm font-bold text-[#0F172A]">28°C</span>
+            <span className="text-sm font-bold text-[#0F172A]">{temp}</span>
           </div>
           <span className="h-4 w-px bg-[#E2E8F0]" />
           <div className="flex items-center gap-1.5">
             <Droplets className="h-4 w-4 text-[#0284C7]" />
-            <span className="text-sm font-semibold text-[#64748B]">65%</span>
+            <span className="text-sm font-semibold text-[#64748B]">
+              {humidity}
+            </span>
           </div>
         </div>
-        
+
         {/* CLOCHE DE NOTIFICATION */}
         <button className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#64748B] hover:text-[#0F172A]">
           <Bell className="h-[18px] w-[18px]" strokeWidth={2} />
@@ -73,10 +85,9 @@ const Navbar = () => {
         <div className="hidden sm:flex h-10 w-10 items-center justify-center rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-base">
           <span>🇸🇳</span>
         </div>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

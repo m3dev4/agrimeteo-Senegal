@@ -1,5 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import regionCoords from "../utils/regionsCoord";
+import { useGeolocalisation } from "../hooks/useLocalisation";
+
+/**
+ * Ce provider est responsable de la gestion de l'état de l'application.
+ * Il gère la récupération des données météo pour toutes les régions du Sénégal.
+ * La fonction selectRegion lui a pour role de récupérer les données météo de la région sélectionnée.
+ */
 
 const WeatherContext = createContext(null);
 
@@ -7,6 +14,8 @@ const WeatherProvider = ({ children }) => {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [weatherData, setWeatherData] = useState(null);
   const [allRegionsWeather, setAllRegionsWeather] = useState(null);
+  const [userWeather, setUserWeather] = useState(null);
+  const { regionId, status } = useGeolocalisation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -66,13 +75,32 @@ const WeatherProvider = ({ children }) => {
           description: data.weather[0].description,
           humidity: data.main.humidity,
           winSpeed: data.wind.speed,
-          winDeg: data.wind.deg
+          winDeg: data.wind.deg,
         };
       }),
     );
     console.log(RegionWeather);
     setAllRegionsWeather(RegionWeather);
   };
+
+  useEffect(() => {
+    const getUserWeather = async () => {
+      const lat = regionId?.lat ?? regionCoords["dakar"].lat;
+      const lon = regionId?.lon ?? regionCoords["dakar"].lon;
+
+      try {
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=fr`;
+        const response = await fetch(url);
+
+        if (!response.ok) throw new Error("Une erreur est survenue");
+        const data = await response.json();
+        setUserWeather(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserWeather();
+  }, [regionId, status]);
 
   useEffect(() => {
     getAllWeather();
@@ -87,6 +115,7 @@ const WeatherProvider = ({ children }) => {
         loading,
         selectRegion,
         allRegionsWeather,
+        userWeather,
       }}
     >
       {children}
