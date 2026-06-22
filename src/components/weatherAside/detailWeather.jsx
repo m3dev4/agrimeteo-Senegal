@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import SunCard from "../sunCard";
 import WeatherSkeleton from "../ui/skeleton";
+import TemperatureChart from "../layout/dashboard/TemperatureChart";
 
 const DetailWeather = (props) => {
   const [showChart, setShowChart] = useState(false);
