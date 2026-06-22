@@ -18,6 +18,7 @@ const WeatherProvider = ({ children }) => {
   const { regionId, status } = useGeolocalisation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const apiKey = import.meta.env.VITE_OPENWEATHER_KEY_API;
 
@@ -35,14 +36,12 @@ const WeatherProvider = ({ children }) => {
 
         if (!response.ok) {
           throw new Error(
-            data.message || "Erreur lors de la récupération des données météo.",
+             "Erreur lors de la récupération des données météo.",
           );
         }
         const data = await response.json();
 
         setWeatherData(data);
-        console.log(data);
-
         return data;
       } catch (err) {
         setError(err.message);
@@ -52,12 +51,13 @@ const WeatherProvider = ({ children }) => {
     };
 
     fetchWeather();
-  }, [selectedRegion]);
+  }, [selectedRegion, refreshKey]);
 
   const selectRegion = (region) => {
     setSelectedRegion(region);
     setWeatherData(null);
     setError(null);
+    setRefreshKey(prev => prev + 1);
   };
 
   const getAllWeather = async () => {

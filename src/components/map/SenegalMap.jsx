@@ -29,6 +29,7 @@ const SenegalMap = () => {
 
   useEffect(() => {
     const svg = containerRef.current?.querySelector("svg");
+    const handler = [];
 
     if (!svg) return;
 
@@ -105,6 +106,8 @@ const SenegalMap = () => {
       region.addEventListener("mouseenter", onEnter);
       region.addEventListener("mouseleave", onLeave);
       region.addEventListener("click", onClick);
+
+
     });
   }, [allRegionsWeather]);
 
@@ -124,19 +127,22 @@ const SenegalMap = () => {
             selectedRegion ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <DetailWeather
-            nom={selectedRegion?.nom}
-            temp={weatherData?.main?.temp}
-            feels_like={weatherData?.main?.feels_like}
-            weather={weatherData?.weather[0].icon}
-            selectRegion={selectRegion}
-            humidity={weatherData?.main?.humidity}
-            wind={weatherData?.wind.speed}
-            sea_level={weatherData?.main?.sea_level}
-            sunrise={weatherData?.sys?.sunrise}
-            sunset={weatherData?.sys?.sunset}
-            loading={loading}
-          />
+          {selectedRegion && (
+            <DetailWeather
+              region={selectedRegion}
+              nom={selectedRegion?.nom}
+              temp={weatherData?.main?.temp}
+              feels_like={weatherData?.main?.feels_like}
+              weather={weatherData?.weather[0].icon}
+              selectRegion={selectRegion}
+              humidity={weatherData?.main?.humidity}
+              wind={weatherData?.wind.speed}
+              sea_level={weatherData?.main?.sea_level}
+              sunrise={weatherData?.sys?.sunrise}
+              sunset={weatherData?.sys?.sunset}
+              loading={loading}
+            />
+          )}
         </div>
       </div>
     </Layout>

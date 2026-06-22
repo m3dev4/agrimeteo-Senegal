@@ -50,15 +50,12 @@ const DetailWeather = (props) => {
   ];
 
   const reload = () => {
-    props.selectRegion(props.nom);
+    props.selectRegion(props.region);
   };
 
-  if (props.loading) {
-    return (
-      <WeatherSkeleton />
-    );
+  if (props.loading || props.temp === undefined || props.temp === null) {
+    return <WeatherSkeleton />;
   }
-
   return (
     <div
       className="
@@ -71,7 +68,6 @@ const DetailWeather = (props) => {
       shadow-2xl
       overflow-y-auto
       "
-      
     >
       {/* HEADER */}
       <div className="flex justify-between px-5 pt-6 items-center">
@@ -185,8 +181,8 @@ const DetailWeather = (props) => {
         </div>
 
         {/* BUTTON TOGGLE */}
-        <button 
-          onClick={() => setShowChart(!showChart)} 
+        <button
+          onClick={() => setShowChart(!showChart)}
           className="btn btn-sm w-full bg-white/10 hover:bg-white/20 text-white border border-white/10 py-2 rounded-xl transition"
         >
           {showChart ? "Masquer le graphique" : "Voir Plus"}
