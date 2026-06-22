@@ -5,11 +5,13 @@ import { useWeatherContext } from "../../context/WeatherContext";
 import regionCoords from "../../utils/regionsCoord";
 import Layout from "../layout/Layout";
 import Wind from "../animations/wind";
+import DetailWeather from "../weatherAside/detailWeather";
 const REGION_IDS = Object.values(ID_MAP);
 
 const SenegalMap = () => {
   const containerRef = useRef(null);
-  const { selectRegion, weatherData, allRegionsWeather } = useWeatherContext();
+  const { selectRegion, selectedRegion, weatherData, allRegionsWeather } =
+    useWeatherContext();
 
   const normalize = (value) => {
     if (!value) return "";
@@ -102,13 +104,31 @@ const SenegalMap = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-linear-to-r from-zinc-900 via-gray-800 to-zinc-900 w-full overflow-hidden flex items-center justify-center">
+      <div className="min-h-screen bg-linear-to-r from-zinc-900 via-gray-800 to-zinc-900 overflow-hidden flex items-center justify-center w-full relative">
         <div className="relative" ref={containerRef}>
           <SenegalMapSVG className="h-screen w-auto object-contain z-10 relative" />
           <Wind
             svgRef={containerRef}
             regionWeather={allRegionsWeather}
             regionCoords={regionCoords}
+          />
+        </div>
+        <div
+          className={`fixed top-0 right-0 z-50 h-full w-80 transition-transform duration-300 ease-in-out ${
+            selectedRegion ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <DetailWeather
+            nom={selectedRegion?.nom}
+            temp={weatherData?.main?.temp}
+            feels_like={weatherData?.main?.feels_like}
+            weather={weatherData?.weather[0].icon}
+            selectRegion={selectRegion}
+            humidity={weatherData?.main?.humidity}
+            wind={weatherData?.wind.speed}
+            sea_level={weatherData?.main?.sea_level}
+            sunrise={weatherData?.sys?.sunrise}
+            sunset={weatherData?.sys?.sunset}
           />
         </div>
       </div>
