@@ -3,7 +3,6 @@ import { LayoutDashboard, Map as MapIcon, Bell, CloudSun, History, FileText, Set
 import { Link, useLocation } from "react-router-dom"
 
 const ITEMS = [
-  { id: "dashboard", path: "/", label: "Dashboard", Icon: LayoutDashboard },
   { id: "map", path: "/carte", label: "Carte", Icon: MapIcon },
   { id: "alerts", path: "/alertes", label: "Alertes", Icon: Bell },
   { id: "forecast", path: "/previsions", label: "Prévisions", Icon: CloudSun },

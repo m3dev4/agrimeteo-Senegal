@@ -112,7 +112,7 @@ const SenegalMap = () => {
     <Layout>
       <div className="min-h-screen bg-linear-to-r from-zinc-900 via-gray-800 to-zinc-900 overflow-hidden flex items-center justify-center w-full relative">
         <div className="relative" ref={containerRef}>
-          <SenegalMapSVG className="h-screen w-auto object-contain z-10 relative" />
+          <SenegalMapSVG className="w-full h-full object-cover" />
           <Wind
             svgRef={containerRef}
             regionWeather={allRegionsWeather}

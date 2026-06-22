@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Droplets,
   WavesArrowUp,
@@ -12,6 +13,8 @@ import SunCard from "../sunCard";
 import WeatherSkeleton from "../ui/skeleton";
 
 const DetailWeather = (props) => {
+  const [showChart, setShowChart] = useState(false);
+
   const handleClose = () => {
     props.selectRegion(null);
   };
@@ -59,14 +62,15 @@ const DetailWeather = (props) => {
     <div
       className="
       h-full w-80
-      bg-[#1D2430]/70
+      bg-[#0F172AF2]/70
       backdrop-blur-xl
       text-white
       border border-white/10
       rounded-l-3xl
       shadow-2xl
-      overflow-hidden
+      overflow-y-auto
       "
+      
     >
       {/* HEADER */}
       <div className="flex justify-between px-5 pt-6 items-center">
@@ -100,7 +104,7 @@ const DetailWeather = (props) => {
 
       <div className="h-px bg-white/10 my-5 mx-5" />
 
-      <div className="px-4 space-y-5">
+      <div className="px-4 pb-6 space-y-5">
         {/* TEMPERATURE */}
         <div
           className="
@@ -178,7 +182,21 @@ const DetailWeather = (props) => {
             label="Coucher du soleil"
           />
         </div>
-        <button className="btn btn-sm w-full mr-5 ">Voir Plus</button>
+
+        {/* BUTTON TOGGLE */}
+        <button 
+          onClick={() => setShowChart(!showChart)} 
+          className="btn btn-sm w-full bg-white/10 hover:bg-white/20 text-white border border-white/10 py-2 rounded-xl transition"
+        >
+          {showChart ? "Masquer le graphique" : "Voir Plus"}
+        </button>
+
+        {/* CHART CONDITIONNEL */}
+        {showChart && (
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl p-4 border border-gray-700 transition-all duration-300">
+            <TemperatureChart weatherData={props.weatherData || props} />
+          </div>
+        )}
       </div>
     </div>
   );
