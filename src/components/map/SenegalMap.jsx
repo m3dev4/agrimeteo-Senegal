@@ -6,12 +6,18 @@ import regionCoords from "../../utils/regionsCoord";
 import Layout from "../layout/Layout";
 import Wind from "../animations/wind";
 import DetailWeather from "../weatherAside/detailWeather";
+
 const REGION_IDS = Object.values(ID_MAP);
 
 const SenegalMap = () => {
   const containerRef = useRef(null);
-  const { selectRegion, selectedRegion, weatherData, allRegionsWeather } =
-    useWeatherContext();
+  const {
+    selectRegion,
+    selectedRegion,
+    weatherData,
+    allRegionsWeather,
+    loading,
+  } = useWeatherContext();
 
   const normalize = (value) => {
     if (!value) return "";
@@ -129,6 +135,7 @@ const SenegalMap = () => {
             sea_level={weatherData?.main?.sea_level}
             sunrise={weatherData?.sys?.sunrise}
             sunset={weatherData?.sys?.sunset}
+            loading={loading}
           />
         </div>
       </div>

@@ -9,6 +9,7 @@ import {
   Sunset,
 } from "lucide-react";
 import SunCard from "../sunCard";
+import WeatherSkeleton from "../ui/skeleton";
 
 const DetailWeather = (props) => {
   const handleClose = () => {
@@ -44,6 +45,16 @@ const DetailWeather = (props) => {
     },
   ];
 
+  const reload = () => {
+    props.selectRegion(props.nom);
+  };
+
+  if (props.loading) {
+    return (
+      <WeatherSkeleton />
+    );
+  }
+
   return (
     <div
       className="
@@ -75,7 +86,7 @@ const DetailWeather = (props) => {
 
         <div className="flex gap-2">
           <button className="p-2 hover:bg-white/10 rounded-full transition">
-            <RefreshCcw size={17} />
+            <RefreshCcw size={17} onClick={reload} />
           </button>
 
           <button
