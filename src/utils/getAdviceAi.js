@@ -19,7 +19,6 @@ export const getAiAdvice = async ({ region, temp, humidity, score, label }) => {
       body: JSON.stringify({
         model: modelAi,
         messages: [
-          // ✅ "messages" avec un s
           {
             role: "user",
             content: prompt, 
