@@ -1,14 +1,11 @@
 import { useState } from "react"
-import { LayoutDashboard, Map as MapIcon, Bell, CloudSun, History, FileText, Settings, MoreHorizontal } from "lucide-react"
+import { Map as MapIcon, CloudSun, FileText, Settings, MoreHorizontal } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 
 const ITEMS = [
-  { id: "map", path: "/carte", label: "Carte", Icon: MapIcon },
-  { id: "alerts", path: "/alertes", label: "Alertes", Icon: Bell },
-  { id: "forecast", path: "/previsions", label: "Prévisions", Icon: CloudSun },
-  { id: "history", path: "/historique", label: "Historique", Icon: History },
-  { id: "reports", path: "/rapports", label: "Rapports", Icon: FileText },
-  { id: "settings", path: "/parametres", label: "Paramètres", Icon: Settings },
+  { id: "map", path: "/", label: "Carte", Icon: MapIcon },
+  { id: "reports", path: "#", label: "Rapports", Icon: FileText },
+  { id: "settings", path: "#", label: "Paramètres", Icon: Settings },
 ]
 
 function checkIfActive(path, currentPath) {

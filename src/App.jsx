@@ -7,8 +7,8 @@ const App = () => {
   <div>
     <BrowserRouter>
     <Routes>
-      {/* <Route path="/" element ={<Home/>}/> */}
-      <Route path="/carte" element={<SenegalMap />}/>
+      <Route path="/" element ={<Home/>}/>
+      {/* <Route path="/carte" element={<SenegalMap />}/> */}
     {/*   <Route path="/alertes" element={<Alertes />} />
       <Route path="/previsions" element={<Previsions />} />
       <Route path="/historique" element={<Historique />} />

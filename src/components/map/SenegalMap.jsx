@@ -112,41 +112,40 @@ const SenegalMap = () => {
   }, [allRegionsWeather]);
 
   return (
-    <Layout>
-      <div className="min-h-screen bg-linear-to-r from-zinc-900 via-gray-800 to-zinc-900 overflow-hidden flex items-center justify-center w-full relative">
-        <div className="relative" ref={containerRef}>
-          <SenegalMapSVG className="w-full h-full object-cover" />
-          <Wind
-            svgRef={containerRef}
-            regionWeather={allRegionsWeather}
-            regionCoords={regionCoords}
-          />
-        </div>
-        <div
-          className={`fixed top-0 right-0 z-50 h-full w-80 transition-transform duration-300 ease-in-out ${
-            selectedRegion ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          {selectedRegion && (
-            <DetailWeather
-              region={selectedRegion}
-              nom={selectedRegion?.nom}
-              temp={weatherData?.main?.temp}
-              feels_like={weatherData?.main?.feels_like}
-              weather={weatherData?.weather[0].icon}
-              selectRegion={selectRegion}
-              humidity={weatherData?.main?.humidity}
-              wind={weatherData?.wind.speed}
-              sea_level={weatherData?.main?.sea_level}
-              sunrise={weatherData?.sys?.sunrise}
-              sunset={weatherData?.sys?.sunset}
-              loading={loading}
-            />
-          )}
-        </div>
+  <Layout>
+    <div className="h-full w-[calc(100%+2rem)] md:w-[calc(100%+3rem)] -m-4 md:-m-6 bg-gradient-to-r from-zinc-900 via-gray-800 to-zinc-900 overflow-hidden flex items-center justify-center relative">
+      <div className="relative p-4" ref={containerRef}>
+        <SenegalMapSVG className="w-full h-auto max-h-[75vh] object-contain" />
+        <Wind
+          svgRef={containerRef}
+          regionWeather={allRegionsWeather}
+          regionCoords={regionCoords}
+        />
       </div>
-    </Layout>
-  );
+      
+      {/* Panneau latéral des détails météo */}
+      <div
+        className={`fixed top-0 right-0 z-50 h-full w-80 transition-transform duration-300 ease-in-out ${
+          selectedRegion ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <DetailWeather
+          nom={selectedRegion?.nom}
+          temp={weatherData?.main?.temp}
+          feels_like={weatherData?.main?.feels_like}
+          weather={weatherData?.weather[0]?.icon}
+          selectRegion={selectRegion}
+          humidity={weatherData?.main?.humidity}
+          wind={weatherData?.wind?.speed}
+          sea_level={weatherData?.main?.sea_level}
+          sunrise={weatherData?.sys?.sunrise}
+          sunset={weatherData?.sys?.sunset}
+        />
+      </div>
+    </div>
+  </Layout>
+);
+
 };
 
 export default SenegalMap;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Droplets,
   WavesArrowUp,
@@ -8,10 +8,12 @@ import {
   MapPin,
   Sunrise,
   Sunset,
+  AlertTriangle, // Ajout d'une icône pour le risque
 } from "lucide-react";
 import SunCard from "../sunCard";
 import WeatherSkeleton from "../ui/skeleton";
 import TemperatureChart from "../layout/dashboard/TemperatureChart";
+import { calculateRisk } from "../../utils/calculateRisk";
 
 const DetailWeather = (props) => {
   const [showChart, setShowChart] = useState(false);
@@ -27,6 +29,14 @@ const DetailWeather = (props) => {
       hour: "2-digit",
       minute: "2-digit",
     });
+
+  // Calcul du risque climatique basé sur les props actuelles (température et humidité)
+  const risk = useMemo(() => {
+    if (props.temp !== undefined && props.humidity !== undefined) {
+      return calculateRisk(props.temp, props.humidity);
+    }
+    return null;
+  }, [props.temp, props.humidity]);
 
   const weatherInfos = [
     {
@@ -56,6 +66,7 @@ const DetailWeather = (props) => {
   if (props.loading || props.temp === undefined || props.temp === null) {
     return <WeatherSkeleton />;
   }
+  
   return (
     <div
       className="
@@ -185,13 +196,52 @@ const DetailWeather = (props) => {
           onClick={() => setShowChart(!showChart)}
           className="btn btn-sm w-full bg-white/10 hover:bg-white/20 text-white border border-white/10 py-2 rounded-xl transition"
         >
-          {showChart ? "Masquer le graphique" : "Voir Plus"}
+          {showChart ? "Masquer les détails" : "Voir Plus"}
         </button>
 
-        {/* CHART CONDITIONNEL */}
+        {/* CHART & RISK CONDITIONNELS */}
         {showChart && (
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl p-4 border border-gray-700 transition-all duration-300">
-            <TemperatureChart weatherData={props.weatherData || props} />
+          <div className="space-y-4 transition-all duration-300">
+            {/* Graphique de température */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl p-4 border border-gray-700">
+              <TemperatureChart weatherData={props.weatherData || props} />
+            </div>
+
+            {/* Encadrement du Risque Climatique */}
+            {risk && (
+              <div 
+                className="rounded-2xl p-4 border border-white/10 flex flex-col items-center justify-center text-center shadow-lg transition-all"
+                style={{ 
+                  backgroundColor: `${risk.color}20`, 
+                }}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <AlertTriangle size={18} style={{ color: risk.color }} />
+                  <span className="text-xs uppercase font-semibold tracking-wider text-gray-300">
+                    Analyse de Risque
+                  </span>
+                </div>
+                
+                <strong className="text-lg font-bold" style={{ color: risk.color }}>
+                  {risk.label}
+                </strong>
+                
+                <div className="text-sm text-gray-300 mt-1">
+                  Score global : <span className="font-bold text-white">{risk.score}</span> / 100
+                </div>
+
+                {/* Barre de progression visuelle pour le score */}
+                <div className="w-full bg-white/10 h-1.5 rounded-full mt-3 overflow-hidden">
+                  <div 
+                    className="h-full rounded-full transition-all duration-500" 
+                    style={{ 
+                      width: `${risk.score}%`, 
+                      backgroundColor: risk.color 
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
