@@ -140,6 +140,7 @@ const SenegalMap = () => {
           sea_level={weatherData?.main?.sea_level}
           sunrise={weatherData?.sys?.sunrise}
           sunset={weatherData?.sys?.sunset}
+          region={selectedRegion}
         />
       </div>
     </div>

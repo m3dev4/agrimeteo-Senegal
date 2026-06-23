@@ -14,9 +14,16 @@ import SunCard from "../sunCard";
 import WeatherSkeleton from "../ui/skeleton";
 import TemperatureChart from "../layout/dashboard/TemperatureChart";
 import { calculateRisk } from "../../utils/calculateRisk";
+import { useEffect } from "react";
+import { getAiAdvice } from "../../utils/getAdviceAi";
+import { Bot } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 const DetailWeather = (props) => {
   const [showChart, setShowChart] = useState(false);
+  const [advice, setAdvice] = useState(null);
+  const [loadingAi, setLoadingAi] = useState(false);
+  const [errorAi, setErrorAi] = useState(null);
 
   const handleClose = () => {
     props.selectRegion(null);
@@ -37,6 +44,28 @@ const DetailWeather = (props) => {
     }
     return null;
   }, [props.temp, props.humidity]);
+
+  useEffect(() => {
+    const region = props.region?.nom;
+    const temp = props.temp;
+    const humidity = props.humidity;
+    const score = risk?.score;
+    const label = risk?.label;
+    if (props.region) {
+      setLoadingAi(true);
+      setErrorAi(null);
+      getAiAdvice({ region, temp, humidity, score, label })
+        .then((data) => {
+          setAdvice(data);
+        })
+        .catch((error) => {
+          setErrorAi(error);
+        })
+        .finally(() => {
+          setLoadingAi(false);
+        });
+    }
+  }, [props.region, props.temp, props.humidity]);
 
   const weatherInfos = [
     {
@@ -66,7 +95,7 @@ const DetailWeather = (props) => {
   if (props.loading || props.temp === undefined || props.temp === null) {
     return <WeatherSkeleton />;
   }
-  
+
   return (
     <div
       className="
@@ -209,10 +238,10 @@ const DetailWeather = (props) => {
 
             {/* Encadrement du Risque Climatique */}
             {risk && (
-              <div 
+              <div
                 className="rounded-2xl p-4 border border-white/10 flex flex-col items-center justify-center text-center shadow-lg transition-all"
-                style={{ 
-                  backgroundColor: `${risk.color}20`, 
+                style={{
+                  backgroundColor: `${risk.color}20`,
                 }}
               >
                 <div className="flex items-center gap-2 mb-1">
@@ -221,27 +250,59 @@ const DetailWeather = (props) => {
                     Analyse de Risque
                   </span>
                 </div>
-                
-                <strong className="text-lg font-bold" style={{ color: risk.color }}>
+
+                <strong
+                  className="text-lg font-bold"
+                  style={{ color: risk.color }}
+                >
                   {risk.label}
                 </strong>
-                
+
                 <div className="text-sm text-gray-300 mt-1">
-                  Score global : <span className="font-bold text-white">{risk.score}</span> / 100
+                  Score global :{" "}
+                  <span className="font-bold text-white">{risk.score}</span> /
+                  100
                 </div>
 
                 {/* Barre de progression visuelle pour le score */}
                 <div className="w-full bg-white/10 h-1.5 rounded-full mt-3 overflow-hidden">
-                  <div 
-                    className="h-full rounded-full transition-all duration-500" 
-                    style={{ 
-                      width: `${risk.score}%`, 
-                      backgroundColor: risk.color 
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${risk.score}%`,
+                      backgroundColor: risk.color,
                     }}
                   />
                 </div>
               </div>
             )}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl p-4 border border-gray-700">
+              <h2 className="text-sm font-semibold flex items-center gap-2 mb-3 text-white">
+                <Bot size={16} className="text-emerald-400" />
+                Conseil du Coach IA
+              </h2>
+
+              <div className="text-gray-300 text-xs space-y-2">
+                {loadingAi ? (
+                  <p className="italic text-gray-500 flex gap-2 items-center justify-center">
+                    <Loader2
+                      size={18}
+                      className="animate-spin text-green-500"
+                    />{" "}
+                    <span>Génération du conseil...</span>
+                  </p>
+                ) : errorAi ? (
+                  <p className="text-red-400">
+                    Erreur de chargement du conseil
+                  </p>
+                ) : (
+                  <p>
+                    {advice ||
+                      "Pas de conseil disponible pour le moment."}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>
