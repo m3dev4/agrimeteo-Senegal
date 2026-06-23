@@ -22,10 +22,10 @@ export const getAiAdvice = async ({ region, temp, humidity, score, label }) => {
           // ✅ "messages" avec un s
           {
             role: "user",
-            content: prompt, // ✅ seulement role + content ici
+            content: prompt, 
           },
         ],
-        temperature: 0.3, // ✅ ces paramètres sont au niveau du body
+        temperature: 0.3,
         max_tokens: 150,
         repetition_penalty: 1.1,
         top_p: 0.95,
