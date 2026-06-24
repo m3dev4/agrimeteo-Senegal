@@ -26,8 +26,6 @@ export const getAiAdvice = async ({ region, temp, humidity, score, label }) => {
         ],
         temperature: 0.3,
         max_tokens: 150,
-        repetition_penalty: 1.1,
-        top_p: 0.95,
       }),
     });
 
