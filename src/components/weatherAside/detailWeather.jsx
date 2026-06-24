@@ -8,7 +8,7 @@ import {
   MapPin,
   Sunrise,
   Sunset,
-  AlertTriangle, // Ajout d'une icône pour le risque
+  AlertTriangle, 
 } from "lucide-react";
 import SunCard from "../sunCard";
 import WeatherSkeleton from "../ui/skeleton";

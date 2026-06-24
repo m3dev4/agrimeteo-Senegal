@@ -10,7 +10,6 @@ const ITEMS = [
 
 function checkIfActive(path, currentPath) {
   let isActive = false
-
   if (path === "/") {
     if (currentPath === "/") {
       isActive = true
