@@ -72,8 +72,8 @@ const SenegalMap = () => {
 
       const text = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "text",
-      );
+        "text"
+      )
 
       const tempText = document.createElementNS(
         "http://www.w3.org/2000/svg",
